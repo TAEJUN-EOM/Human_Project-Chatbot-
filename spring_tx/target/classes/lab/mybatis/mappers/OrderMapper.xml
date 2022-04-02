@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper  namespace="lab.tx.OrderMapper">
+  <select id="getItem" resultType="lab.spring.tx.model.Item">
+     select * from ITEM where ITEM_ID = #{item_id}
+  </select>
+   
+  <insert  id="addPay" parameterType="lab.spring.tx.model.Payment">
+    <selectKey keyProperty="pay_id" resultType="int" order="BEFORE">
+    	select payment_seq.nextval from dual
+    </selectKey>
+    	insert into payment (pay_id, item_id, price, costomer_id)
+    	values ( #{pay_id} , #{item_id} , #{price}, #{costomer_id} )
+  </insert>
+  
+   
+   <insert  id="addOrder" parameterType="lab.spring.tx.model.OrderInfo">
+   	<selectKey keyProperty="order_id" resultType="int" order="BEFORE">
+    	select orderinfo_seq.nextval from dual
+    </selectKey>
+    insert into orderinfo (order_id, pay_id, item_id,costomer_id, address) 
+      values (#{order_id}, #{pay_id}, #{item_id}, #{costomer_id}, #{address})    
+   </insert>  
+  
+</mapper>
