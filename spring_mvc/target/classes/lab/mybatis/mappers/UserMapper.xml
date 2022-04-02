@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper  namespace="lab.user.UserMapper">
+  <select id="getUserList" resultType="lab.spring.model.UserVO">
+     select * from members 
+  </select>
+  <select id="getUser" resultType="lab.spring.model.UserVO" parameterType="string">
+      select * from members where userid= #{uid}
+  </select>
+  <select id="login" resultType="lab.spring.model.UserVO"  parameterType="hashmap">
+      select * from members where userid= #{uid} and userpwd=#{upwd}
+  </select>
+  <insert  id="addUser" parameterType="lab.spring.model.UserVO">
+    insert into members (userid, username, userpwd, email, phone, address, gender)
+    values ( #{userid}, #{username}, #{userpwd}, #{email}, #{phone}, #{address}, #{gender})
+  </insert>
+  
+  <update id="modifyUser"   parameterType="lab.spring.model.UserVO">
+      update members set email=#{email}, phone=#{phone}, address=#{address}
+      where userid =#{userid}  
+  </update>
+  <delete id="removeUser" parameterType="string">
+      delete members where userid = #{uid}
+  </delete> 
+  
+  <select id="searchUser" resultType="lab.spring.model.UserVO" parameterType="hashmap">
+      select * from members where 
+      <if test="userid !=null">
+         userid like #{userid}
+      </if>
+      <if test="username !=null">
+         username like #{username}
+      </if>
+      <if test="email !=null">
+         email like #{email}
+      </if>
+      
+  </select>     
+  
+</mapper>
